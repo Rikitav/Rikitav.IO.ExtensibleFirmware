@@ -5,10 +5,7 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rikitav.IO.ExtensibleFirmware", "Rikitav.IO.ExtensibleFirmware\Rikitav.IO.ExtensibleFirmware.csproj", "{05EE6008-0FA3-4E3F-A82E-4842F24B4E4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rikitav.IO.ExtensibleFirmware.Tests", "Rikitav.IO.ExtensibleFirmware.Tests\Rikitav.IO.ExtensibleFirmware.Tests.csproj", "{D5E1F19F-AC14-486A-B93C-6575C08D51B6}"
-	ProjectSection(ProjectDependencies) = postProject
-		{05EE6008-0FA3-4E3F-A82E-4842F24B4E4F} = {05EE6008-0FA3-4E3F-A82E-4842F24B4E4F}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rikitav.IO.ExtensibleFirmware.Tests", "Rikitav.IO.ExtensibleFirmware.Tests\Rikitav.IO.ExtensibleFirmware.Tests.csproj", "{E7F7D80B-58DE-4790-A6A2-7C820A8D027E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,10 +17,10 @@ Global
 		{05EE6008-0FA3-4E3F-A82E-4842F24B4E4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05EE6008-0FA3-4E3F-A82E-4842F24B4E4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05EE6008-0FA3-4E3F-A82E-4842F24B4E4F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D5E1F19F-AC14-486A-B93C-6575C08D51B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5E1F19F-AC14-486A-B93C-6575C08D51B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5E1F19F-AC14-486A-B93C-6575C08D51B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5E1F19F-AC14-486A-B93C-6575C08D51B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7F7D80B-58DE-4790-A6A2-7C820A8D027E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7F7D80B-58DE-4790-A6A2-7C820A8D027E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7F7D80B-58DE-4790-A6A2-7C820A8D027E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7F7D80B-58DE-4790-A6A2-7C820A8D027E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

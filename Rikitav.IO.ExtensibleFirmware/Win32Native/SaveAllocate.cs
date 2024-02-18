@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Rikitav.IO.ExtensibleFirmware
+namespace Rikitav.IO.ExtensibleFirmware.Win32Native
 {
     public class SaveAllocate
     {

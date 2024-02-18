@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rikitav.IO.ExtensibleFrimware\Rikitav.IO.ExtensibleFirmware.csproj" />
+    <ProjectReference Include="..\Rikitav.IO.ExtensibleFirmware\Rikitav.IO.ExtensibleFirmware.csproj" />
   </ItemGroup>
 
 </Project>
