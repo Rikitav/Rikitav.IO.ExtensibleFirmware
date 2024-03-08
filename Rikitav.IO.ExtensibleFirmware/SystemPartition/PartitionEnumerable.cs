@@ -5,15 +5,15 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Rikitav.IO.ExtensibleFirmware
+namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
 {
-    public class PartitionEnumerable : IEnumerable<DirectoryInfo>
+    internal class PartitionEnumerable : IEnumerable<DirectoryInfo>
     {
         public IEnumerator<DirectoryInfo> GetEnumerator() => new PartitionEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => new PartitionEnumerator();
     }
 
-    public class PartitionEnumerator : IEnumerator<DirectoryInfo>
+    internal class PartitionEnumerator : IEnumerator<DirectoryInfo>
     {
         object IEnumerator.Current => FormatValue();
         DirectoryInfo IEnumerator<DirectoryInfo>.Current => FormatValue();
@@ -97,7 +97,7 @@ namespace Rikitav.IO.ExtensibleFirmware
         }
     }
 
-    public class InvalidEnumerableHandleException : Exception
+    internal class InvalidEnumerableHandleException : Exception
     {
         public int ErrorCode
         {
@@ -108,7 +108,7 @@ namespace Rikitav.IO.ExtensibleFirmware
         public InvalidEnumerableHandleException(string EnumerableType, int errorCode)
             : base(string.Format("WinApi {0}Enumerable handle was invalid", EnumerableType))
         {
-            this.ErrorCode = errorCode;
+            ErrorCode = errorCode;
         }
     }
 
@@ -125,7 +125,7 @@ namespace Rikitav.IO.ExtensibleFirmware
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct PARTITION_INFORMATION_GPT
+    internal struct PARTITION_INFORMATION_GPT
     {
         public Guid PartitionType;
         public Guid PartitionId;
