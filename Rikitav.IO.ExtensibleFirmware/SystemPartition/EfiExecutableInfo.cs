@@ -17,17 +17,17 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
             get => Path.GetFileNameWithoutExtension(_FullPath);
         }
 
+        public bool Exists
+        {
+            get => File.Exists(_FullPath);
+        }
+
         public string FullName
         {
             get => _FullPath;
             private set => _FullPath = value;
         }
         private string _FullPath;
-
-        public bool Exists
-        {
-            get => File.Exists(_FullPath);
-        }
 
         public ProcessorArchitecture Architecture
         {
@@ -57,7 +57,7 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
             string TmpFullPath = Path.Combine(ESP, "EFI", ApplicationName, RelativePath);
 
             string TmpExt = Path.GetExtension(TmpFullPath);
-            if (string.IsNullOrEmpty(TmpExt) || TmpExt != "efi")
+            if (string.IsNullOrEmpty(TmpExt) || TmpExt != ".efi")
                 throw new InvalidDataException("File extension does not match target type");
 
             _FullPath = TmpFullPath;

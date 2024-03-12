@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Rikitav.IO.ExtensibleFirmware.Win32Native;
 
 namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
 {
