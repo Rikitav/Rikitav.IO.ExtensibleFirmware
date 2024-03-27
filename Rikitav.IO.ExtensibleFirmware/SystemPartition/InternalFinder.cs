@@ -33,7 +33,7 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
                 }
 
                 // If Header type equals searchable, return his ID
-                if (DeviceControlResult.Gpt.PartitionType == EfiPartition.Identificator)
+                if (DeviceControlResult.Gpt.PartitionType == EfiPartition.TypeID)
                     return DeviceControlResult;
             }
 
