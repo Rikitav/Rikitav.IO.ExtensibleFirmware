@@ -5,12 +5,12 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
 {
     public static class EfiPartition
     {
-        public static Guid PartitionId
+        public static Guid Identificator
         {
             get
             {
                 if (_PartitionIdentificator == Guid.Empty)
-                    _PartitionIdentificator = GetPartitionIndentificator();
+                    _PartitionIdentificator = PartitionInfo.Gpt.PartitionId;
 
                 return _PartitionIdentificator;
             }
@@ -20,35 +20,34 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
                 _PartitionIdentificator = value;
             }
         }
-        internal static Guid _PartitionIdentificator;
+        private static Guid _PartitionIdentificator = Guid.Empty;
 
-        public static Guid PartitionType
+        internal static PARTITION_INFORMATION_EX PartitionInfo
+        {
+            get
+            {
+                if (_PartitionInfo is null)
+                    _PartitionInfo = InternalFinder.FindEfiPartitionInfo();
+
+                return _PartitionInfo.Value;
+            }
+
+            private set
+            {
+                _PartitionInfo = value;
+            }
+        }
+        private static PARTITION_INFORMATION_EX? _PartitionInfo;
+
+        public static Guid TypeID
         {
             get => new Guid("C12A7328-F81F-11D2-BA4B-00A0C93EC93B");
         }
 
-        public static Guid GetPartitionIndentificator()
-        {
-            if (_PartitionIdentificator != Guid.Empty)
-                _PartitionIdentificator = InternalFinder.FindEfiPartitionInfo().Gpt.PartitionId;
-
-            return _PartitionIdentificator;
-        }
-
         public static string GetFullPath()
-        {
-            if (_PartitionIdentificator != Guid.Empty)
-                _PartitionIdentificator = InternalFinder.FindEfiPartitionInfo().Gpt.PartitionId;
-
-            return @"\\?\Volume{" + _PartitionIdentificator + @"}\";
-        }
+            => @"\\?\Volume{" + Identificator + @"}\";
 
         public static DirectoryInfo GetDirectoryInfo()
-        {
-            if (_PartitionIdentificator != Guid.Empty)
-                _PartitionIdentificator = InternalFinder.FindEfiPartitionInfo().Gpt.PartitionId;
-
-            return new DirectoryInfo(@"\\?\Volume{" + _PartitionIdentificator + @"}\");
-        }
+            => new DirectoryInfo(GetFullPath());
     }
 }

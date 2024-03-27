@@ -71,7 +71,7 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
                 NativeMethods.FindVolumeClose(EnumerationHandle);
 
             if (CurrentVolumeName != null)
-                CurrentVolumeName = null;
+                CurrentVolumeName.Clear();
         }
 
         internal static class NativeMethods

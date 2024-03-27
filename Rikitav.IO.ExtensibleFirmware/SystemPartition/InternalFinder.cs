@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using Rikitav.IO.ExtensibleFirmware.Win32Native;
 
@@ -13,19 +15,25 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
             // Enumerate all partitions by WinApi FindVolume function
             foreach (DirectoryInfo Volume in new PartitionEnumerable())
             {
-                IntPtr VolumeHandle = Win32Native.InteropInterface.GetPartitionHandle(Volume.Name.TrimEnd('\\'));
+                Debug.WriteLine(Volume.FullName);
+                IntPtr VolumeHandle = InteropInterface.GetPartitionHandle(Volume.Name.TrimEnd('\\'));
                 if (VolumeHandle == NativeMethods.INVALID_HANDLE_VALUE)
                 {
-                    Win32Native.InteropInterface.CloseHandle(VolumeHandle);
+                    InteropInterface.CloseHandle(VolumeHandle);
                     continue;
                 }
 
                 // Getting partition header data
-                PARTITION_INFORMATION_EX DeviceControlResult = Win32Native.InteropInterface.GetIoDeviceData<PARTITION_INFORMATION_EX>(VolumeHandle, NativeMethods.IOCTL_DISK_GET_PARTITION_INFO_EX);
-                Win32Native.InteropInterface.CloseHandle(VolumeHandle);
+                PARTITION_INFORMATION_EX DeviceControlResult = InteropInterface.GetIoDeviceData<PARTITION_INFORMATION_EX>(VolumeHandle, NativeMethods.IOCTL_DISK_GET_PARTITION_INFO_EX);
+                InteropInterface.CloseHandle(VolumeHandle);
+
+                if (Marshal.GetLastWin32Error() != 0)
+                {
+                    continue;
+                }
 
                 // If Header type equals searchable, return his ID
-                if (DeviceControlResult.Gpt.PartitionType == EfiPartition.PartitionType)
+                if (DeviceControlResult.Gpt.PartitionType == EfiPartition.Identificator)
                     return DeviceControlResult;
             }
 

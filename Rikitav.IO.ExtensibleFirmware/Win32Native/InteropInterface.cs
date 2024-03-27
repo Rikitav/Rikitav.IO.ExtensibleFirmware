@@ -19,8 +19,7 @@ namespace Rikitav.IO.ExtensibleFirmware.Win32Native
 
         internal static TOutBuffer GetIoDeviceData<TOutBuffer>(IntPtr hDevice, uint dwIoControlCode) where TOutBuffer : struct
         {
-            int OutBufferSize = Marshal.SizeOf<TOutBuffer>();
-            return SaveAllocate.Global(OutBufferSize, StructPtr =>
+            using (SaveAllocator StructPtr = SaveAllocator.Structure<TOutBuffer>())
             {
                 // Copying structure to allocated memory
                 Marshal.StructureToPtr(new TOutBuffer(), StructPtr, true);
@@ -30,12 +29,12 @@ namespace Rikitav.IO.ExtensibleFirmware.Win32Native
                 bool bResult = NativeMethods.DeviceIoControl(
                     hDevice, dwIoControlCode,
                     IntPtr.Zero, 0,
-                    StructPtr, (uint)OutBufferSize,
+                    StructPtr, (uint)Marshal.SizeOf<TOutBuffer>(),
                     ref lpBytesReturned, IntPtr.Zero);
 
                 // Creating new struct from allocated byte buffer
                 return Marshal.PtrToStructure<TOutBuffer>(StructPtr);
-            });
+            }
         }
 
         public static void CloseHandle(IntPtr Handle)
