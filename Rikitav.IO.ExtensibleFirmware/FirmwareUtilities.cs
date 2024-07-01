@@ -9,31 +9,22 @@ namespace Rikitav.IO.ExtensibleFirmware
 {
     internal class FirmwareUtilities
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public enum FirmwareType
+        public static bool FirmwareAvailable()
         {
-            Unknown = 0,
-            Bios = 1,
-            Uefi = 2,
-            Max = 3
-        }
-
-        public static FirmwareType GetFirmwareType()
-        {
-            if (NativeMethods.GetFirmwareType(out FirmwareType FwType))
-                return FwType;
-
-            return FirmwareType.Unknown;
+            NativeMethods.GetFirmwareType("", "{00000000-0000-0000-0000-000000000000}", IntPtr.Zero, 0);
+            return Marshal.GetLastWin32Error() == 0;
         }
 
         internal static class NativeMethods
         {
-            #region Firmware type
-            [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-            public static extern bool GetFirmwareType(out FirmwareType FwType);
-            #endregion
+            public const int ERROR_INVALID_FUNCTION = 1;
+            [DllImport("kernel32.dll",
+               EntryPoint = "GetFirmwareEnvironmentVariableW",
+               SetLastError = true,
+               CharSet = CharSet.Unicode,
+               ExactSpelling = true,
+               CallingConvention = CallingConvention.StdCall)]
+            public static extern int GetFirmwareType(string lpName, string lpGUID, IntPtr pBuffer, uint size);
         }
     }
 }

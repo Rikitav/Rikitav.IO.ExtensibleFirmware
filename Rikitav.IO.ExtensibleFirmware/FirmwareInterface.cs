@@ -14,7 +14,7 @@ namespace Rikitav.IO.ExtensibleFirmware
         /// <returns>If available, return <see langword="true"/>, else <see langword="false"/></returns>
         public static bool Available
         {
-            get => FirmwareUtilities.GetFirmwareType() == FirmwareUtilities.FirmwareType.Uefi;
+            get => FirmwareUtilities.FirmwareAvailable();
         }
 
         /// <summary>
