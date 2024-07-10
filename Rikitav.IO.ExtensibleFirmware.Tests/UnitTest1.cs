@@ -11,5 +11,12 @@ namespace Rikitav.IO.ExtensibleFirmware.Tests
             DirectoryInfo EfiDir = FirmwareInterface.GetSystemPartition();
             Assert.IsTrue(EfiDir.GetDirectories().Select(dir => dir.Name).Contains("EFI"));
         }
+
+        [TestMethod]
+        public void Test_FirmwareAvailable()
+        {
+            bool EfiDir = FirmwareInterface.Available;
+            Assert.IsTrue(EfiDir);
+        }
     }
 }

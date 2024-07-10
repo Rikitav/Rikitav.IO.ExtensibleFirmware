@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text;
-using Rikitav.IO.ExtensibleFirmware.SystemPartition;
 
 namespace Rikitav.IO.ExtensibleFirmware
 {
@@ -11,8 +8,11 @@ namespace Rikitav.IO.ExtensibleFirmware
     {
         public static bool FirmwareAvailable()
         {
-            NativeMethods.GetFirmwareType("", "{00000000-0000-0000-0000-000000000000}", IntPtr.Zero, 0);
-            return Marshal.GetLastWin32Error() == 0;
+            _ = NativeMethods.GetFirmwareType("", "{00000000-0000-0000-0000-000000000000}", IntPtr.Zero, 0);
+            int lastError = Marshal.GetLastWin32Error();
+            
+            Debug.WriteLine("FirmwareAvailable function lastError : " + lastError, nameof(FirmwareUtilities));
+            return lastError != NativeMethods.ERROR_INVALID_FUNCTION;
         }
 
         internal static class NativeMethods
