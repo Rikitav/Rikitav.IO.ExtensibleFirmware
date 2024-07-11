@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rikitav.IO.ExtensibleFirmware.Win32Native;
+using System;
 using System.IO;
 
 namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
