@@ -1,17 +1,17 @@
 ﻿using Microsoft.Win32.SafeHandles;
-using Rikitav.IO.ExtensibleFirmware.Win32Native;
+using Rikitav.IO.ExtensibleFirmware.SystemPartition;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
+namespace Rikitav.IO.ExtensibleFirmware.Win32Native
 {
-    internal static class InternalFinder
+    internal static class InternalEfiSystemPartitionFinder
     {
         public static PARTITION_INFORMATION_EX FindEfiPartitionInfo()
         {
             if (!FirmwareInterface.Available)
-                throw new PlatformNotSupportedException("Running on non UEFI System");
+                throw new PlatformNotSupportedException("Executing on non UEFI System");
 
             // Enumerate all partitions by WinApi FindVolume function
             using SafeFileHandle hndl = NativeMethods.CreateFile(
@@ -23,15 +23,12 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
                 NativeMethods.FILE_ATTRIBUTE_READONLY,
                 IntPtr.Zero);
 
-            int lastError = 0;
-            int DRIVE_LAYOUT_BUFFER_SIZE = 1024;
-
             for (int Attempt = 1; Attempt <= 5; Attempt++)
             {
                 IntPtr driveLayoutPtr = Marshal.AllocHGlobal(1024 * Attempt);
                 if (!NativeMethods.DeviceIoControl(hndl, NativeMethods.IOCTL_DISK_GET_DRIVE_LAYOUT_EX, IntPtr.Zero, 0, driveLayoutPtr, 1024 * (uint)Attempt, out _, IntPtr.Zero))
                 {
-                    lastError = Marshal.GetLastWin32Error();
+                    int lastError = Marshal.GetLastWin32Error();
                     if (lastError != NativeMethods.ERROR_INSUFFICIENT_BUFFER)
                         throw new DriveNotFoundException();
 
@@ -44,7 +41,7 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
 
                 for (uint ParIndex = 0; ParIndex < driveLayout.PartitionCount; ParIndex++)
                 {
-                    IntPtr ptr = new IntPtr(PartitionEntryAddress + (ParIndex * Marshal.SizeOf(typeof(PARTITION_INFORMATION_EX))));
+                    IntPtr ptr = new IntPtr(PartitionEntryAddress + ParIndex * Marshal.SizeOf(typeof(PARTITION_INFORMATION_EX)));
                     PARTITION_INFORMATION_EX partInfo = (PARTITION_INFORMATION_EX)Marshal.PtrToStructure(ptr, typeof(PARTITION_INFORMATION_EX));
 
                     if (partInfo.Gpt.PartitionType == EfiPartition.TypeID)
@@ -58,7 +55,7 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
             throw new DriveNotFoundException();
         }
 
-        internal static class NativeMethods
+        private static class NativeMethods
         {
             public const uint GENERIC_WRITE = 0x01U << 30;
             public const uint GENERIC_READ = 0x01U << 31;

@@ -1,12 +1,10 @@
 ﻿using Rikitav.IO.ExtensibleFirmware.SystemPartition;
 using System;
 using System.IO;
-using System.Net.Sockets;
-using System.Runtime.InteropServices;
 
 namespace Rikitav.IO.ExtensibleFirmware
 {
-    public static class FirmwareInterface
+    public static partial class FirmwareInterface
     {
         /// <summary>
         /// Checks whether the UEFI platform is available on this system
@@ -14,21 +12,27 @@ namespace Rikitav.IO.ExtensibleFirmware
         /// <returns>If available, return <see langword="true"/>, else <see langword="false"/></returns>
         public static bool Available
         {
-            get => FirmwareUtilities.FirmwareAvailable();
+            get => FirmwareUtilities.CheckInterfaceAvailablity();
         }
 
         /// <summary>
         /// Searches among the partition for the one that is marked as EfiSystemPartition
         /// </summary>
         /// <returns><see cref="DirectoryInfo"/> of EfiSystemPartition</returns>
-        public static DirectoryInfo GetSystemPartition()
+        public static DirectoryInfo SystemPartition
         {
-            return EfiPartition.GetDirectoryInfo();
+            get => EfiPartition.GetDirectoryInfo();
         }
 
-        internal static class NativeMethods
+        /// <summary>
+        /// Boot into the UEFI user interface after rebooting the computer. Does NOT reboot the computer, but sets the boot condition
+        /// </summary>
+        public static void BootToUserInterface()
         {
-            // Nope
+            if (!FirmwareGlobalEnvironment.OsIndicationsSupported.HasFlag(EfiOsIindications.BOOT_TO_FW_UI))
+                throw new PlatformNotSupportedException();
+
+            FirmwareGlobalEnvironment.OsIndications |= EfiOsIindications.BOOT_TO_FW_UI;
         }
     }
 }

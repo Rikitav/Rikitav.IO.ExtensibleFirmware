@@ -7,9 +7,9 @@ namespace Rikitav.IO.ExtensibleFirmware.Win32Native
     /// Contains extended information about a drive's partitions.
     /// </summary>
     [StructLayout(LayoutKind.Explicit)]
-    internal struct DRIVE_LAYOUT_INFORMATION_EX
+    public struct DRIVE_LAYOUT_INFORMATION_EX
     {
-        [FieldOffset(0)] public uint PartitionStyle;
+        [FieldOffset(0)] public PartitionStyle PartitionStyle;
         [FieldOffset(4)] public uint PartitionCount;
         [FieldOffset(8)] public IntPtr Mbr;
         [FieldOffset(8)] public IntPtr Gpt;
@@ -20,7 +20,7 @@ namespace Rikitav.IO.ExtensibleFirmware.Win32Native
     /// Contains GUID partition table (GPT) partition information.
     /// </summary>
     [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
-    internal struct PARTITION_INFORMATION_GPT
+    public struct PARTITION_INFORMATION_GPT
     {
         [FieldOffset(0)] public Guid PartitionType;
         [FieldOffset(16)] public Guid PartitionId;
@@ -32,7 +32,7 @@ namespace Rikitav.IO.ExtensibleFirmware.Win32Native
     /// Contains information about a disk partition.
     /// </summary>
     [StructLayout(LayoutKind.Explicit)]
-    internal struct PARTITION_INFORMATION_EX
+    public struct PARTITION_INFORMATION_EX
     {
         [FieldOffset(0)] public uint PartitionStyle;
         [FieldOffset(8)] public long StartingOffset;

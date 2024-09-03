@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
 {
@@ -34,7 +32,11 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
             get
             {
                 byte[] data = File.ReadAllBytes(_FullPath);
-                return (ProcessorArchitecture)BitConverter.ToUInt16(data, BitConverter.ToInt32(data, 0x3c) + 4);
+                ushort archVal = BitConverter.ToUInt16(data, BitConverter.ToInt32(data, 0x3c) + 4);
+                if (!Enum.IsDefined(typeof(ProcessorArchitecture), archVal))
+                    return ProcessorArchitecture.Unknown;
+
+                return (ProcessorArchitecture)archVal;
             }
         }
 

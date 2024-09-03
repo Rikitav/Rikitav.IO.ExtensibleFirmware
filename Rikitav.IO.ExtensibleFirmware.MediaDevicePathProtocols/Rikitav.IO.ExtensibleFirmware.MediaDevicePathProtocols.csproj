@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>netstandard2.1</TargetFramework>
+	  <Nullable>enable</Nullable>
+	  <BaseOutputPath>..\bin</BaseOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rikitav.IO.ExtensibleFirmware.BootService\Rikitav.IO.ExtensibleFirmware.BootService.csproj" />
+    <ProjectReference Include="..\Rikitav.IO.ExtensibleFirmware\Rikitav.IO.ExtensibleFirmware.csproj" />
+  </ItemGroup>
+
+</Project>

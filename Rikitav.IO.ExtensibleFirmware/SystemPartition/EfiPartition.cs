@@ -8,35 +8,15 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
     {
         public static Guid Identificator
         {
-            get
-            {
-                if (_PartitionIdentificator == Guid.Empty)
-                    _PartitionIdentificator = PartitionInfo.Gpt.PartitionId;
-
-                return _PartitionIdentificator;
-            }
-
-            private set
-            {
-                _PartitionIdentificator = value;
-            }
+            get => _PartitionIdentificator ??= PartitionInfo.Gpt.PartitionId;
+            private set => _PartitionIdentificator = value;
         }
-        private static Guid _PartitionIdentificator = Guid.Empty;
+        private static Guid? _PartitionIdentificator = null;
 
         internal static PARTITION_INFORMATION_EX PartitionInfo
         {
-            get
-            {
-                if (_PartitionInfo is null)
-                    _PartitionInfo = InternalFinder.FindEfiPartitionInfo();
-
-                return _PartitionInfo.Value;
-            }
-
-            private set
-            {
-                _PartitionInfo = value;
-            }
+            get => _PartitionInfo ??= InternalEfiSystemPartitionFinder.FindEfiPartitionInfo();
+            private set => _PartitionInfo = value;
         }
         private static PARTITION_INFORMATION_EX? _PartitionInfo;
 
@@ -50,5 +30,8 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
 
         public static DirectoryInfo GetDirectoryInfo()
             => new DirectoryInfo(GetFullPath());
+
+        public static PARTITION_INFORMATION_EX GetPartitionInfo()
+            => PartitionInfo;
     }
 }
