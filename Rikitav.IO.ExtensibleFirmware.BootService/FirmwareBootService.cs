@@ -81,7 +81,7 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService
             WriteFirmwareLoadOption(loadOption, BootOptionIndex);
         }
 
-        public static EFI_LOAD_OPTION GetRawLoadOption(ushort BootOptionIndex)
+        public static EFI_LOAD_OPTION ReadRawLoadOption(ushort BootOptionIndex)
         {
             return ReadFirmwareLoadOption(BootOptionIndex);
         }
