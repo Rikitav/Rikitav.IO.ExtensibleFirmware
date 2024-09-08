@@ -1,6 +1,6 @@
 ﻿namespace Rikitav.IO.ExtensibleFirmware
 {
-    public enum ProcessorArchitecture
+    public enum ProcessorArchitecture : ushort
     {
         /// <summary>
         /// Unknown architecture
