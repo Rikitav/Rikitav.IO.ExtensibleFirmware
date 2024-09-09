@@ -27,6 +27,9 @@ namespace Rikitav.IO.ExtensibleFirmware
 
         public static void SetEnvironmentVariable(string VarName, Guid EnvironmentIdentificator, IntPtr Value, int PtrSize)
         {
+            if (!FirmwareInterface.Available)
+                throw new PlatformNotSupportedException("This system does not support UEFI, or is loaded in LEGACY mode");
+
             try
             {
                 // Execution and error check
@@ -48,6 +51,9 @@ namespace Rikitav.IO.ExtensibleFirmware
 
         public static IntPtr GetEnvironmentVariable(string VarName, Guid EnvironmentIdentificator, out int DataLength, int VarSize = 4) // 4 - int size
         {
+            if (!FirmwareInterface.Available)
+                throw new PlatformNotSupportedException("This system does not support UEFI, or is loaded in LEGACY mode");
+
             // Data
             IntPtr pointer = IntPtr.Zero;
             DataLength = 0;
@@ -81,6 +87,9 @@ namespace Rikitav.IO.ExtensibleFirmware
 
         public static void SetEnvironmentVariableEx(string VarName, Guid EnvironmentIdentificator, VariableAttributes attributes, IntPtr Value, int PtrSize)
         {
+            if (!FirmwareInterface.Available)
+                throw new PlatformNotSupportedException("This system does not support UEFI, or is loaded in LEGACY mode");
+
             try
             {
                 // Execution and error check
@@ -105,6 +114,9 @@ namespace Rikitav.IO.ExtensibleFirmware
             // Data
             IntPtr pointer = IntPtr.Zero;
             DataLength = 0;
+
+            if (!FirmwareInterface.Available)
+                throw new PlatformNotSupportedException("This system does not support UEFI, or is loaded in LEGACY mode");
 
             try
             {
@@ -132,34 +144,6 @@ namespace Rikitav.IO.ExtensibleFirmware
                 throw new FirmwareEnvironmentException("Failed to read environment variable", ex);
             }
         }
-
-        /*
-        private static void PromoteProcessSystemEnvironmentPrivilege()
-        {
-            if (NativeMethods.Promoted)
-                return;
-
-            IntPtr hToken = IntPtr.Zero;
-            if (!NativeMethods.OpenProcessToken(NativeMethods.GetCurrentProcess(), NativeMethods.TOKEN_ADJUST_PRIVILEGES | NativeMethods.TOKEN_QUERY, ref hToken))
-                throw new Win32Exception(Marshal.GetLastWin32Error(), "Failed to open process token");
-
-            NativeMethods.TokenPrivelege tp = new NativeMethods.TokenPrivelege()
-            {
-                Count = 1,
-                Luid = 0,
-                Attr = NativeMethods.SE_PRIVILEGE_ENABLED
-            };
-
-            if (!NativeMethods.LookupPrivilegeValue(null, NativeMethods.SE_SYSTEM_ENVIRONMENT_NAME, ref tp.Luid))
-                throw new Win32Exception(Marshal.GetLastWin32Error(), "Failed to lookup process privelage value");
-
-            if (!NativeMethods.AdjustTokenPrivileges(hToken, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero))
-                throw new Win32Exception(Marshal.GetLastWin32Error(), "Failed to adjust process token");
-
-            NativeMethods.Promoted = true;
-            NativeMethods.CloseHandle(hToken);
-        }
-        */
 
         private class SystemEnvironmentPriviledge : IDisposable
         {
