@@ -11,8 +11,11 @@ ExtensibleFirmware is a .NET class library for working with UEFI firmware. It pr
 
 ## Installation
 ```bash
-# Install via NuGet
-Install-Package ExtensibleFirmware
+# Install via NuGet Package manager
+Install-Package Rikitav.IO.ExtensibleFirmware
+
+# Install via dotnet CLI
+dotnet add package Rikitav.IO.ExtensibleFirmware 
 ```
 
 ## Usage Examples
