@@ -98,5 +98,15 @@ namespace Examples
 }
 ```
 
+## Requirements
+Most functionality will work on every Windows system that supports uefi, except EfiExecutableInfo and VolumenName pathes, the will only work on Windows 8 or above
+
+## Resources
+If you want to learn more about UEFI and how this library works, read the documentation at the following links :
+- [Boot manager](https://uefi.org/specs/UEFI/2.9_A/03_Boot_Manager.html)
+- [Device path protocols](https://uefi.org/specs/UEFI/2.9_A/10_Protocols_Device_Path_Protocol.html)
+- [Load options](https://uefi.org/specs/UEFI/2.9_A/03_Boot_Manager.html#load-options)
+- [Global environment variables](https://uefi.org/specs/UEFI/2.9_A/03_Boot_Manager.html#globally-defined-variables)
+
 ## License
 This project is licensed under the GNU GPL License. See [LICENSE](LICENSE) for details.
