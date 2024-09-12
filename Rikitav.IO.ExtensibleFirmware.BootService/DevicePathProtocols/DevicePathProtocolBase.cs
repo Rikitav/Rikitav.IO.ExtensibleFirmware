@@ -1,12 +1,27 @@
-﻿using Rikitav.IO.ExtensibleFirmware.BootService.Win32Native;
+// Rikitav.IO.ExtensibleFirmware
+// Copyright (C) 2024 Rikitav
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+using Rikitav.IO.ExtensibleFirmware.BootService.UefiNative;
 using System;
 using System.IO;
 
 namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
 {
     /// <summary>
-    /// A Device Path is used to define the programmatic path to a device. The primary purpose of a Device Path is to allow an application, such as an OS loader, to determine the physical device that the interfaces are abstracting.
-    /// https://uefi.org/specs/UEFI/2.10/10_Protocols_Device_Path_Protocol.html#generic-device-path-structures
+    /// A <see href="https://uefi.org/specs/UEFI/2.10/10_Protocols_Device_Path_Protocol.html#generic-device-path-structures">Device Path</see> is used to define the programmatic path to a device. The primary purpose of a Device Path is to allow an application, such as an OS loader, to determine the physical device that the interfaces are abstracting.
     /// </summary>
     public abstract class DevicePathProtocolBase
     {
@@ -33,7 +48,7 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
         /// <summary>
         /// Create protocol wrapper of Type and deserailize structure
         /// </summary>
-        /// <typeparam name="TProtocol"></typeparam>
+        /// <param name="protocolType"></param>
         /// <param name="protocol"></param>
         /// <returns></returns>
         internal static DevicePathProtocolBase CreateProtocol(Type protocolType, EFI_DEVICE_PATH_PROTOCOL protocol)

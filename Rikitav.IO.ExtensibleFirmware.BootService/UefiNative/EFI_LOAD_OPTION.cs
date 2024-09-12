@@ -14,15 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+using Rikitav.IO.ExtensibleFirmware.BootService.LoadOption;
+
 #pragma warning disable CS1591
-
-
-namespace Rikitav.IO.ExtensibleFirmware.Win32Native
+namespace Rikitav.IO.ExtensibleFirmware.BootService.UefiNative
 {
-    public enum PartitionStyle : uint
+    public struct EFI_LOAD_OPTION
     {
-        MasterBootRecord,
-        GuidPartitionTable,
-        Raw
+        public LoadOptionAttributes Attributes;
+        public ushort FilePathListLength;
+        public string Description;
+        public EFI_DEVICE_PATH_PROTOCOL[] FilePathList;
+        public byte[] OptionalData;
     }
 }

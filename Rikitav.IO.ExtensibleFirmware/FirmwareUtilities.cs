@@ -1,30 +1,89 @@
-﻿using System;
+// Rikitav.IO.ExtensibleFirmware
+// Copyright (C) 2024 Rikitav
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace Rikitav.IO.ExtensibleFirmware
 {
+    /// <summary>
+    /// Features for interacting with UEFI
+    /// </summary>
     public static class FirmwareUtilities
     {
-        public static bool CheckInterfaceAvailablity()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static bool CheckFirmwareAvailablity()
         {
             _ = NativeMethods.GetFirmwareEnvironmentVariableExW("", "{00000000-0000-0000-0000-000000000000}", IntPtr.Zero, 0, out _);
-            int lastError = Marshal.GetLastWin32Error();
-            return lastError != NativeMethods.ERROR_INVALID_FUNCTION;
+            return Marshal.GetLastWin32Error() != NativeMethods.ERROR_INVALID_FUNCTION;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="VarName"></param>
+        /// <param name="Value"></param>
+        /// <param name="PtrSize"></param>
         public static void SetGlobalEnvironmentVariable(string VarName, IntPtr Value, int PtrSize)
             => SetEnvironmentVariable(VarName, NativeMethods._FirmwareGlobalEnvironmentIdentificator, Value, PtrSize);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="VarName"></param>
+        /// <param name="DataLength"></param>
+        /// <param name="VarSize"></param>
+        /// <returns></returns>
         public static IntPtr GetGlobalEnvironmentVariable(string VarName, out int DataLength, int VarSize = 4)
             => GetEnvironmentVariable(VarName, NativeMethods._FirmwareGlobalEnvironmentIdentificator, out DataLength, VarSize);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="VarName"></param>
+        /// <param name="attributes"></param>
+        /// <param name="Value"></param>
+        /// <param name="PtrSize"></param>
         public static void SetGlobalEnvironmentVariableEx(string VarName, VariableAttributes attributes, IntPtr Value, int PtrSize)
             => SetEnvironmentVariableEx(VarName, NativeMethods._FirmwareGlobalEnvironmentIdentificator, attributes, Value, PtrSize);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="VarName"></param>
+        /// <param name="attributes"></param>
+        /// <param name="DataLength"></param>
+        /// <param name="VarSize"></param>
+        /// <returns></returns>
         public static IntPtr GetGlobalEnvironmentVariableEx(string VarName, out VariableAttributes attributes, out int DataLength, int VarSize = 4)
             => GetEnvironmentVariableEx(VarName, NativeMethods._FirmwareGlobalEnvironmentIdentificator, out attributes, out DataLength, VarSize);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="VarName"></param>
+        /// <param name="EnvironmentIdentificator"></param>
+        /// <param name="Value"></param>
+        /// <param name="PtrSize"></param>
+        /// <exception cref="PlatformNotSupportedException"></exception>
+        /// <exception cref="FirmwareEnvironmentException"></exception>
         public static void SetEnvironmentVariable(string VarName, Guid EnvironmentIdentificator, IntPtr Value, int PtrSize)
         {
             if (!FirmwareInterface.Available)
@@ -49,6 +108,16 @@ namespace Rikitav.IO.ExtensibleFirmware
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="VarName"></param>
+        /// <param name="EnvironmentIdentificator"></param>
+        /// <param name="DataLength"></param>
+        /// <param name="VarSize"></param>
+        /// <returns></returns>
+        /// <exception cref="PlatformNotSupportedException"></exception>
+        /// <exception cref="FirmwareEnvironmentException"></exception>
         public static IntPtr GetEnvironmentVariable(string VarName, Guid EnvironmentIdentificator, out int DataLength, int VarSize = 4) // 4 - int size
         {
             if (!FirmwareInterface.Available)
@@ -85,6 +154,16 @@ namespace Rikitav.IO.ExtensibleFirmware
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="VarName"></param>
+        /// <param name="EnvironmentIdentificator"></param>
+        /// <param name="attributes"></param>
+        /// <param name="Value"></param>
+        /// <param name="PtrSize"></param>
+        /// <exception cref="PlatformNotSupportedException"></exception>
+        /// <exception cref="FirmwareEnvironmentException"></exception>
         public static void SetEnvironmentVariableEx(string VarName, Guid EnvironmentIdentificator, VariableAttributes attributes, IntPtr Value, int PtrSize)
         {
             if (!FirmwareInterface.Available)
@@ -109,6 +188,17 @@ namespace Rikitav.IO.ExtensibleFirmware
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="VarName"></param>
+        /// <param name="EnvironmentIdentificator"></param>
+        /// <param name="attributes"></param>
+        /// <param name="DataLength"></param>
+        /// <param name="VarSize"></param>
+        /// <returns></returns>
+        /// <exception cref="PlatformNotSupportedException"></exception>
+        /// <exception cref="FirmwareEnvironmentException"></exception>
         public static IntPtr GetEnvironmentVariableEx(string VarName, Guid EnvironmentIdentificator, out VariableAttributes attributes, out int DataLength, int VarSize = 4) // 4 - int size
         {
             // Data
@@ -162,7 +252,7 @@ namespace Rikitav.IO.ExtensibleFirmware
                     throw new Win32Exception(Marshal.GetLastWin32Error(), "Failed to open process token");
 
                 // Getting priviledge info
-                if (!NativeMethods.LookupPrivilegeValue(null, NativeMethods.SE_SYSTEM_ENVIRONMENT_NAME, ref tp.Luid))
+                if (!NativeMethods.LookupPrivilegeValue(IntPtr.Zero, NativeMethods.SE_SYSTEM_ENVIRONMENT_NAME, ref tp.Luid))
                     throw new Win32Exception(Marshal.GetLastWin32Error(), "Failed to lookup process privelage value");
 
                 // Promoting process
@@ -205,7 +295,7 @@ namespace Rikitav.IO.ExtensibleFirmware
             public static extern bool CloseHandle(IntPtr hObject);
 
             [DllImport("advapi32.dll", SetLastError = true)]
-            public static extern bool LookupPrivilegeValue(string host, string name, ref long pluid);
+            public static extern bool LookupPrivilegeValue(IntPtr host, string name, ref long pluid);
 
             [DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)]
             public static extern bool AdjustTokenPrivileges(IntPtr htok, bool disall, ref TokenPrivelege newst, int len, IntPtr prev, IntPtr prevlen);
@@ -250,28 +340,17 @@ namespace Rikitav.IO.ExtensibleFirmware
         }
     }
 
-    [Flags]
-    public enum VariableAttributes : int
+    /// <summary>
+    /// Represents an error that occurred while working with UEFI
+    /// </summary>
+    public class FirmwareEnvironmentException : Exception
     {
-        NON_VOLATILE = 0x00000001,
-        BOOTSERVICE_ACCESS = 0x00000002,
-        RUNTIME_ACCESS = 0x00000004,
-        HARDWARE_ERROR_RECORD = 0x00000008,
-        AUTHENTICATED_WRITE_ACCESS = 0x00000010,
-        TIME_BASED_AUTHENTICATED_WRITE_ACCESS = 0x00000020,
-        APPEND_WRITE = 0x00000040,
-        ENHANCED_AUTHENTICATED_ACCESS = 0x00000080
-    }
-
-    public class FirmwareEnvironmentException : Win32Exception
-    {
+        /// <inheritdoc/>
         public FirmwareEnvironmentException(string Message)
             : base(Message) { }
 
+        /// <inheritdoc/>
         public FirmwareEnvironmentException(string Message, Exception inner)
             : base(Message, inner) { }
-
-        public FirmwareEnvironmentException(string Message, int ErrorCode)
-            : base(ErrorCode, Message) { }
     }
 }

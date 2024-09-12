@@ -1,4 +1,20 @@
-﻿using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
+// Rikitav.IO.ExtensibleFirmware
+// Copyright (C) 2024 Rikitav
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
 using System.IO;
 
 namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
@@ -7,11 +23,11 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
     /// The CD-ROM Media Device Path is used to define a system partition that exists on a CD-ROM. The CD-ROM is assumed to contain an ISO-9660 file system and follow the CD-ROM “El Torito” format
     /// https://uefi.org/specs/UEFI/2.10/10_Protocols_Device_Path_Protocol.html#cd-rom-media-device-path
     /// </summary>
-    [DefineDevicePathProtocol(DeviceProtocolType.MEDIA, 2, typeof(CdRomMediaDevicePath))]
+    [DefineDevicePathProtocol(DeviceProtocolType.Media, 2, typeof(CdRomMediaDevicePath))]
     public sealed class CdRomMediaDevicePath : DevicePathProtocolBase
     {
         /// <inheritdoc/>
-        public override DeviceProtocolType Type => DeviceProtocolType.MEDIA;
+        public override DeviceProtocolType Type => DeviceProtocolType.Media;
 
         /// <inheritdoc/>
         public override byte SubType => 2;
@@ -34,9 +50,15 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
         /// </summary>
         public ulong PartitionSize { get; set; }
 
+        /// <summary>
+        /// Create new <see cref="CdRomMediaDevicePath"/> protocol instance
+        /// </summary>
         public CdRomMediaDevicePath()
             : base() { }
 
+        /// <summary>
+        /// Create new <see cref="CdRomMediaDevicePath"/> protocol instance from boot entry and partition offset
+        /// </summary>
         public CdRomMediaDevicePath(uint bootEntry, ulong partitionStart, ulong partitionSize) : base()
         {
             BootEntry = bootEntry;

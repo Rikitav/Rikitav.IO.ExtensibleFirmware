@@ -1,4 +1,20 @@
-﻿using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
+// Rikitav.IO.ExtensibleFirmware
+// Copyright (C) 2024 Rikitav
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
 using Rikitav.IO.ExtensibleFirmware.Win32Native;
 using System;
 using System.ComponentModel;
@@ -11,11 +27,11 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
     /// The Hard Drive Media Device Path is used to represent a partition on a hard drive.
     /// <see href="https://uefi.org/specs/UEFI/2.9_A/10_Protocols_Device_Path_Protocol.html#hard-drive-media-device-path"/>
     /// </summary>
-    [DefineDevicePathProtocol(DeviceProtocolType.MEDIA, 1, typeof(HardDriveMediaDevicePath))]
+    [DefineDevicePathProtocol(DeviceProtocolType.Media, 1, typeof(HardDriveMediaDevicePath))]
     public class HardDriveMediaDevicePath : DevicePathProtocolBase
     {
         /// <inheritdoc/>
-        public override DeviceProtocolType Type => DeviceProtocolType.MEDIA;
+        public override DeviceProtocolType Type => DeviceProtocolType.Media;
 
         /// <inheritdoc/>
         public override byte SubType => 1;
@@ -53,11 +69,14 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
         /// </summary>
         public SignatureType SignatureType { get; set; }
 
+        /// <summary>
+        /// Create new <see cref="HardDriveMediaDevicePath"/> protocol instance
+        /// </summary>
         public HardDriveMediaDevicePath()
             : base() { }
 
         /// <summary>
-        /// Create a protocol from partition information
+        /// Create new <see cref="HardDriveMediaDevicePath"/> protocol instance from <see cref="PARTITION_INFORMATION_EX"/> structure
         /// </summary>
         /// <param name="partition"></param>
         /// <exception cref="InvalidDataException"></exception>
@@ -70,7 +89,7 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
         }
 
         /// <summary>
-        /// Create a protocol from unique partition GUID
+        /// Create a protocol from unique partition <see cref="Guid"/>
         /// </summary>
         /// <param name="partitionIdentificator"></param>
         /// <exception cref="ArgumentException"></exception>
@@ -180,16 +199,40 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
         }
     }
 
+    /// <summary>
+    /// Partition format
+    /// </summary>
     public enum PartitionFormat : byte
     {
+        /// <summary>
+        /// Mastre boot record
+        /// </summary>
         LegacyMBR = 0x01,
+
+        /// <summary>
+        /// Guid partition table
+        /// </summary>
         GuidPartitionTable = 0x02
     }
 
+    /// <summary>
+    /// Signature type
+    /// </summary>
     public enum SignatureType : byte
     {
+        /// <summary>
+        /// Raw
+        /// </summary>
         NoDiskSignature = 0x00,
+
+        /// <summary>
+        /// Mastre boot record
+        /// </summary>
         MbrSignature = 0x01,
+
+        /// <summary>
+        /// Guid partition table
+        /// </summary>
         GuidSignature = 0x02
     }
 }

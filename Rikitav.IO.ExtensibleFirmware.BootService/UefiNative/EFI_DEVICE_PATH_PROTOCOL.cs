@@ -14,15 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
+
 #pragma warning disable CS1591
-
-
-namespace Rikitav.IO.ExtensibleFirmware.Win32Native
+namespace Rikitav.IO.ExtensibleFirmware.BootService.UefiNative
 {
-    public enum PartitionStyle : uint
+    public struct EFI_DEVICE_PATH_PROTOCOL
     {
-        MasterBootRecord,
-        GuidPartitionTable,
-        Raw
+        public DeviceProtocolType Type;
+        public byte SubType;
+        public ushort Length;
+        public byte[] Data;
     }
 }

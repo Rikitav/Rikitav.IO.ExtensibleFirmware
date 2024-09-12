@@ -1,4 +1,4 @@
-// Rikitav.IO.ExtensibleFirmware
+﻿// Rikitav.IO.ExtensibleFirmware
 // Copyright (C) 2024 Rikitav
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -14,41 +14,55 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
+using System;
+
+namespace Rikitav.IO.ExtensibleFirmware
 {
     /// <summary>
-    /// Type of device path protocol
+    /// Attributes bitmask to set for the variable
     /// </summary>
-    public enum DeviceProtocolType : byte
+    [Flags]
+    public enum VariableAttributes : int
     {
         /// <summary>
-        /// Hardware Device Path
+        /// The variable is accessible from a non volatile environment
         /// </summary>
-        Hardware = 0x01,
+        NON_VOLATILE = 0x00000001,
 
         /// <summary>
-        /// ACPI Device Path
+        /// The variable is available while the Boot service is running
         /// </summary>
-        ACPI = 0x02,
+        BOOTSERVICE_ACCESS = 0x00000002,
 
         /// <summary>
-        /// Messaging Device Path
+        /// The variable is available at runtime
         /// </summary>
-        Message = 0x03,
+        RUNTIME_ACCESS = 0x00000004,
 
         /// <summary>
-        /// Media Device Path
+        /// NoDescription
         /// </summary>
-        Media = 0x04,
+        HARDWARE_ERROR_RECORD = 0x00000008,
 
         /// <summary>
-        /// BIOS Boot Specification Device Path
+        /// The variable is available only to authorized sources
         /// </summary>
-        BIOS = 0x05,
+        AUTHENTICATED_WRITE_ACCESS = 0x00000010,
 
         /// <summary>
-        /// End of Hardware Device Path
+        /// NoDescription
         /// </summary>
-        End = 0x7F
+        TIME_BASED_AUTHENTICATED_WRITE_ACCESS = 0x00000020,
+
+        /// <summary>
+        /// NoDescription
+        /// </summary>
+        APPEND_WRITE = 0x00000040,
+
+        /// <summary>
+        /// NoDescription
+        /// </summary>
+        ENHANCED_AUTHENTICATED_ACCESS = 0x00000080
     }
+
 }
