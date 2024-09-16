@@ -57,6 +57,10 @@ namespace Examples
             // Reading boot option
             FirmwareBootOption bootOption = FirmwareBootService.ReadLoadOption(0x0003); // <-- Set here your variable index
             
+            // Showing basic informatino
+            Console.WriteLine("Option name : {0}", bootOption.Description);
+            Console.WriteLine("Attributes  : {0}", bootOption.Attributes);
+            
             // Enumerating all protocols
             foreach (DevicePathProtocolBase protocol in bootOption.OptionProtocols)
                 Console.WriteLine(protocol.ToString()); // Getting string representation of protocol
