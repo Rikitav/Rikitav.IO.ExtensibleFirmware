@@ -176,8 +176,9 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService
             using (BinaryWriter writer = new BinaryWriter(new MemoryPointerStream(pointer, loadOption.GetStructureLength(), true), Encoding.Unicode, true))
                 loadOption.MarshalToBinaryWriter(writer);
 #if DEBUG
-            byte[] DebugData = new byte[loadOption.StructureLength];
-            Marshal.Copy(pointer, DebugData, 0, loadOption.StructureLength);
+            int structLength = loadOption.GetStructureLength();
+            byte[] DebugData = new byte[structLength];
+            Marshal.Copy(pointer, DebugData, 0, structLength);
 #endif
             // Writing variable to firmware
             FirmwareUtilities.SetGlobalEnvironmentVariable(

@@ -51,7 +51,7 @@ namespace Rikitav.IO.ExtensibleFirmware.Win32Native
     [StructLayout(LayoutKind.Explicit)]
     public struct PARTITION_INFORMATION_EX
     {
-        [FieldOffset(0)] public uint PartitionStyle;
+        [FieldOffset(0)] public PartitionStyle PartitionStyle;
         [FieldOffset(8)] public long StartingOffset;
         [FieldOffset(16)] public long PartitionLength;
         [FieldOffset(24)] public uint PartitionNumber;

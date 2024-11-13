@@ -5,11 +5,11 @@
 		<Nullable>enable</Nullable>
 		<BaseOutputPath>..\bin</BaseOutputPath>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Version>1.0.1</Version>
+    	<Version>1.1.15</Version>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<AssemblyVersion>$(Version)</AssemblyVersion>
 		<FileVersion>$(Version)</FileVersion>
-		<PackageTags>uefi;efi;firmware</PackageTags>
+    	<PackageTags>uefi;efi;firmware;boot;booting;system;bios</PackageTags>
 		<RepositoryUrl>https://github.com/Rikitav/Rikitav.IO.ExtensibleFirmware</RepositoryUrl>
 		<PackageIcon>icon.png</PackageIcon>
 		<AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
@@ -18,6 +18,9 @@
 		<Authors>Rikitav Tim4ik</Authors>
 		<Company>Rikitav Tim4ik</Company>
 		<PackageReadmeFile>README.MD</PackageReadmeFile>
+    	<Title>$(AssemblyName)</Title>
+    	<Description>C# Library providing convenient abstractions and tools for working with UEFI firmware (United Extensible Firmware Interface) </Description>
+    	<PackageProjectUrl>https://github.com/Rikitav/Rikitav.IO.ExtensibleFirmware</PackageProjectUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

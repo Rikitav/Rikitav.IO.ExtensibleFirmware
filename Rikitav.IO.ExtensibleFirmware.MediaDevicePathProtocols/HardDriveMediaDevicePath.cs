@@ -82,7 +82,7 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
         /// <exception cref="InvalidDataException"></exception>
         public HardDriveMediaDevicePath(PARTITION_INFORMATION_EX partition) : base()
         {
-            if (partition.PartitionStyle != 2)
+            if (partition.PartitionStyle != PartitionStyle.GuidPartitionTable)
                 throw new InvalidDataException("Partition information describe MBR pr RAW based partition");
 
             Deserialize(partition);

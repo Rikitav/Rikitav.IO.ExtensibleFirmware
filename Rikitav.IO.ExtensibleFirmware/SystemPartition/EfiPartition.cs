@@ -28,7 +28,7 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
         /// <summary>
         /// System partition information
         /// </summary>
-        private static PARTITION_INFORMATION_EX _PartitionInfo = InternalEfiSystemPartitionFinder.FindEfiPartitionInfo();
+        private static PARTITION_INFORMATION_EX _PartitionInfo = FindEfiPartitionInfo();
 
         /// <summary>
         /// Guid identifier of the system EFI partition
@@ -38,14 +38,14 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
         /// <summary>
         /// Guid type of system EFI partition
         /// </summary>
-        public static Guid TypeID = new Guid("C12A7328-F81F-11D2-BA4B-00A0C93EC93B");
+        public static readonly Guid TypeID = Guid.Parse("c12a7328-f81f-11d2-ba4b-00a0c93ec93b");
 
         /// <summary>
         /// Get volume GUID path for system EFI partition
         /// </summary>
         /// <returns></returns>
         public static string GetFullPath()
-            => @"\\?\Volume{" + Identificator + @"}\";
+            => string.Concat("\\\\?\\Volume{", Identificator.ToString(), "}\\");
 
         /// <summary>
         /// Directory information for system EFI partition
@@ -60,5 +60,23 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
         /// <returns></returns>
         public static PARTITION_INFORMATION_EX GetPartitionInfo()
             => _PartitionInfo;
+
+        private static PARTITION_INFORMATION_EX FindEfiPartitionInfo()
+        {
+            if (!FirmwareInterface.Available)
+                throw new PlatformNotSupportedException("Executing on non UEFI System");
+
+            Guid EfiPartType = Guid.Parse("c12a7328-f81f-11d2-ba4b-00a0c93ec93b");
+            foreach (PARTITION_INFORMATION_EX partition in new IoctlVolumeEnumerable(0))
+            {
+                if (partition.PartitionStyle != PartitionStyle.GuidPartitionTable)
+                    throw new DriveNotFoundException("Drive signature is not GPT (GuidPartitionTable)");
+
+                if (partition.Gpt.PartitionType == EfiPartType)
+                    return partition;
+            }
+
+            throw new DriveNotFoundException("Efi partition was not found");
+        }
     }
 }

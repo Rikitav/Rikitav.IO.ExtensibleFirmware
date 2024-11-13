@@ -15,8 +15,6 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma warning disable CS1591
-
-
 namespace Rikitav.IO.ExtensibleFirmware.Win32Native
 {
     public enum PartitionStyle : uint

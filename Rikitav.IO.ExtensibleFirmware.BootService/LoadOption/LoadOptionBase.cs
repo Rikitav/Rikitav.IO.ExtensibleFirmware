@@ -17,14 +17,10 @@
 using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
 using Rikitav.IO.ExtensibleFirmware.BootService.UefiNative;
 using System;
-using System.Drawing;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
-using static System.Net.Mime.MediaTypeNames;
-using System.Xml.Linq;
-using System.Collections.Generic;
-using System.Data;
 
 namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
 {
