@@ -18,7 +18,7 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Rikitav.IO.ExtensibleFirmware.BootService.UefiNative
+namespace Rikitav.IO.ExtensibleFirmware.BootService.Win32Native
 {
     internal class MemoryPointerStream : Stream, IDisposable
     {

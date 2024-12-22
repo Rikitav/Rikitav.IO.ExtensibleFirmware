@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Rikitav.IO.ExtensibleFirmware.BootService\Rikitav.IO.ExtensibleFirmware.BootService.csproj" />
+    <ProjectReference Include="..\Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols\Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols.csproj" />
     <ProjectReference Include="..\Rikitav.IO.ExtensibleFirmware\Rikitav.IO.ExtensibleFirmware.csproj" />
   </ItemGroup>
 

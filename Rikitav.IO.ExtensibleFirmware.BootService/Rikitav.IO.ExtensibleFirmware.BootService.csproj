@@ -5,7 +5,7 @@
 		<Nullable>enable</Nullable>
 		<BaseOutputPath>..\bin</BaseOutputPath>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Version>1.1.15</Version>
+		<Version>1.2</Version>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<AssemblyVersion>$(Version)</AssemblyVersion>
 		<FileVersion>$(Version)</FileVersion>
@@ -20,7 +20,7 @@
 		<PackageReadmeFile>README.MD</PackageReadmeFile>
     	<Title>$(AssemblyName)</Title>
     	<Description>C# Library providing convenient abstractions and tools for working with UEFI firmware (United Extensible Firmware Interface) </Description>
-    	<PackageProjectUrl>https://github.com/Rikitav/Rikitav.IO.ExtensibleFirmware</PackageProjectUrl>
+    	<PackageProjectUrl>https://www.nuget.org/packages/Rikitav.IO.ExtensibleFirmware.BootService/</PackageProjectUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

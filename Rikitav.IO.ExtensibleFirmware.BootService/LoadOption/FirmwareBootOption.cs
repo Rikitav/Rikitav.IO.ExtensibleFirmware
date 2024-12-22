@@ -16,6 +16,7 @@
 
 using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
 using Rikitav.IO.ExtensibleFirmware.BootService.UefiNative;
+using Rikitav.IO.ExtensibleFirmware.BootService.Win32Native;
 using System.IO;
 
 namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption

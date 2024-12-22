@@ -16,11 +16,12 @@
 
 using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
 using Rikitav.IO.ExtensibleFirmware.BootService.LoadOption;
+using Rikitav.IO.ExtensibleFirmware.BootService.UefiNative;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Rikitav.IO.ExtensibleFirmware.BootService.UefiNative
+namespace Rikitav.IO.ExtensibleFirmware.BootService.Win32Native
 {
     internal class LoadOptionMarshaller
     {

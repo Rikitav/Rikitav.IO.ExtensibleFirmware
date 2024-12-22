@@ -74,7 +74,21 @@ namespace Rikitav.IO.ExtensibleFirmware.SystemPartition
         }
 
         /// <summary>
-        /// Creates a new instance of "EfiExecutableInfo" from the full path to the application file
+        /// Creates a new instance of <see cref="EfiExecutableInfo"/> from info of efi application file
+        /// </summary>
+        /// <param name="EfiExecutableFile"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public EfiExecutableInfo(FileInfo EfiExecutableFile)
+        {
+            if (EfiExecutableFile == null)
+                throw new ArgumentNullException(nameof(EfiExecutableFile));
+
+            _FileInfo = EfiExecutableFile;
+            _FilePath = EfiExecutableFile.FullName;
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="EfiExecutableInfo"/> from the full path to the efi application file
         /// </summary>
         /// <param name="FullPath"></param>
         /// <exception cref="ArgumentNullException"></exception>

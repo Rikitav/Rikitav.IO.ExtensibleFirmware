@@ -1,10 +1,10 @@
-﻿using Rikitav.IO.ExtensibleFirmware.SystemPartition;
-
-internal class Program
+﻿namespace Rikitav.IO.ExtensibleFirmware.TestsApplication
 {
-    private static void Main(string[] args)
+    internal static class Program
     {
-        Console.WriteLine(EfiPartition.GetFullPath());
-        Console.WriteLine(new EfiExecutableInfo("refind", "refind_x64.efi").Architecture);
+        private static void Main(string[] args)
+        {
+            Examples.EnumerateOptions();
+        }
     }
 }

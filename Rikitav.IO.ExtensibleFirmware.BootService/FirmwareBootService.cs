@@ -17,7 +17,9 @@
 using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
 using Rikitav.IO.ExtensibleFirmware.BootService.LoadOption;
 using Rikitav.IO.ExtensibleFirmware.BootService.UefiNative;
+using Rikitav.IO.ExtensibleFirmware.BootService.Win32Native;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -70,6 +72,33 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService
 
             // Removing index from boot order
             LoadOrder = LoadOrder.Where(x => x != BootOptionIndex).ToArray();
+        }
+
+        /// <summary>
+        /// Lists all load options in boot order
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<FirmwareBootOption>EnumerateBootOptions()
+        {
+            return LoadOrder.Select(i => ReadLoadOption(i));
+        }
+
+        /// <summary>
+        /// Lists all load options in boot order
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<T?> EnumrateBootOptions<T>() where T : LoadOptionBase
+        {
+            return LoadOrder.Select(i => ReadLoadOption<T>(i));
+        }
+
+        /// <summary>
+        /// Lists all load options in boot order
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<EFI_LOAD_OPTION> EnumrateRawBootOptions()
+        {
+            return LoadOrder.Select(i => ReadRawLoadOption(i));
         }
 
         /// <summary>

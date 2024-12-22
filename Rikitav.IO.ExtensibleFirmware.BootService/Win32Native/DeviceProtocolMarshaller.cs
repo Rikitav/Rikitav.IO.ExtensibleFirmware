@@ -15,9 +15,10 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
+using Rikitav.IO.ExtensibleFirmware.BootService.UefiNative;
 using System.IO;
 
-namespace Rikitav.IO.ExtensibleFirmware.BootService.UefiNative
+namespace Rikitav.IO.ExtensibleFirmware.BootService.Win32Native
 {
     internal static class DeviceProtocolMarshaller
     {

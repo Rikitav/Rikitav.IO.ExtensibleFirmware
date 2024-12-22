@@ -36,6 +36,9 @@ namespace Examples
 
             // Example reading config file from ESP using volume path, instead of using MountVol
             string configText = File.ReadAllText(Path.Combine(EspVolumePath, "EFI", "Ubuntu", "grub.cfg"));
+
+            // Dumping result
+            Console.WriteLine(configText);
         }
     }
 }
@@ -69,7 +72,37 @@ namespace Examples
 }
 ```
 
-### Example 3: Creating boot option
+### Example 3: Enumearating boot options
+```csharp
+using Rikitav.IO.ExtensibleFirmware.BootService;
+using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
+using Rikitav.IO.ExtensibleFirmware.BootService.LoadOption;
+
+namespace Rikitav.IO.ExtensibleFirmware.TestsApplication
+{
+    public static class BootManagerTests
+    {
+        public static void RunTests()
+        {
+            // Enumerating all boot options in boot order
+            int index = 0;
+            foreach (FirmwareBootOption bootOption in FirmwareBootService.EnumerateBootOptions())
+            {
+                // Showing basic informatino
+                Console.WriteLine("\n====={ Boot option " + index++ + " }=====");
+                Console.WriteLine("Option name : {0}", bootOption.Description);
+                Console.WriteLine("Attributes  : {0}", bootOption.Attributes);
+
+                // Enumerating all protocols
+                foreach (DevicePathProtocolBase protocol in bootOption.OptionProtocols)
+                    Console.WriteLine(protocol.ToString()); // Getting string representation of protocol
+            }
+        }
+    }
+}
+```
+
+### Example 4: Creating boot option
 ```csharp
 using Rikitav.IO.ExtensibleFirmware.BootService;
 using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
