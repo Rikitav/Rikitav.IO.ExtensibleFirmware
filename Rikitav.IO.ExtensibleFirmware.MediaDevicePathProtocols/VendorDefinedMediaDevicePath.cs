@@ -24,7 +24,7 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
     /// Vendor-Defined Media Device Path
     /// https://uefi.org/specs/UEFI/2.10/10_Protocols_Device_Path_Protocol.html#vendor-defined-media-device-path
     /// </summary>
-    [DefineDevicePathProtocol(DeviceProtocolType.Media, 3, typeof(VendorDefinedMediaDevicePath))]
+    [DefineDevicePathProtocol(DeviceProtocolType.Media, 3)]
     public class VendorDefinedMediaDevicePath : DevicePathProtocolBase
     {
         /// <inheritdoc/>
@@ -32,9 +32,6 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
 
         /// <inheritdoc/>
         public override byte SubType => 3;
-
-        /// <inheritdoc/>
-        public override ushort DataLength => (ushort)(4 + 16 + VendorDefinedData.Length);
 
         /// <summary>
         /// Vendor-assigned GUID that defines the data that follows

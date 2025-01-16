@@ -21,16 +21,13 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
     /// <summary>
     /// This protocol is the final protocol for any boot option; if it is not specified, the option will be considered invalid
     /// </summary>
-    public class DevicePathProtocolEnd : DevicePathProtocolBase
+    internal class DevicePathProtocolEnd : DevicePathProtocolBase
     {
         /// <inheritdoc/>
         public override DeviceProtocolType Type => DeviceProtocolType.End;
 
         /// <inheritdoc/>
         public override byte SubType => 0xFF;
-
-        /// <inheritdoc/>
-        public override ushort DataLength => 4;
 
         /// <summary>
         /// Create new <see cref="DevicePathProtocolEnd"/> protocol instance

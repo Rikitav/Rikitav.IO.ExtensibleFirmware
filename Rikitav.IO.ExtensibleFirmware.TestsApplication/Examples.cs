@@ -14,9 +14,9 @@ namespace Rikitav.IO.ExtensibleFirmware.TestsApplication
             int index = 0;
             foreach (FirmwareBootOption bootOption in FirmwareBootService.EnumerateBootOptions())
             {
-                // Showing basic informatino
-                Console.WriteLine("\n====={ Boot option " + index++ + " }=====");
-                Console.WriteLine("Option name : {0}", bootOption.Description);
+                // Showing basic information
+                Console.WriteLine("\n===[ Boot option #" + index++ + " ]" + new string('=', 60));
+                Console.WriteLine("Option name : \"{0}\"", bootOption.Description);
                 Console.WriteLine("Attributes  : {0}", bootOption.Attributes);
 
                 // Enumerating all protocols
@@ -33,7 +33,7 @@ namespace Rikitav.IO.ExtensibleFirmware.TestsApplication
             {
                 new HardDriveMediaDevicePath(new Guid("XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX")), // The partition on which the bootloader is located
                 new FilePathMediaDevicePath("EFI\\MyApplication\\bootx64.efi"), // Path to the EFI application to be loaded
-                new DevicePathProtocolEnd() // Indicates the end of the boot option. if this is omitted, the option will not be considered valid
+                //new DevicePathProtocolEnd() // Indicates the end of the boot option. if this is omitted, the option will not be considered valid
             };
 
             // Creating simple load option
@@ -51,8 +51,8 @@ namespace Rikitav.IO.ExtensibleFirmware.TestsApplication
             // Reading boot option
             FirmwareBootOption bootOption = FirmwareBootService.ReadLoadOption(0x0003); // <-- Set here your variable index
 
-            // Showing basic informatino
-            Console.WriteLine("Option name : {0}", bootOption.Description);
+            // Showing basic information
+            Console.WriteLine("Option name : \"{0}\"", bootOption.Description);
             Console.WriteLine("Attributes  : {0}", bootOption.Attributes);
 
             // Enumerating all protocols

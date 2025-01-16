@@ -27,7 +27,7 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
     /// The Hard Drive Media Device Path is used to represent a partition on a hard drive.
     /// <see href="https://uefi.org/specs/UEFI/2.9_A/10_Protocols_Device_Path_Protocol.html#hard-drive-media-device-path"/>
     /// </summary>
-    [DefineDevicePathProtocol(DeviceProtocolType.Media, 1, typeof(HardDriveMediaDevicePath))]
+    [DefineDevicePathProtocol(DeviceProtocolType.Media, 1)]
     public class HardDriveMediaDevicePath : DevicePathProtocolBase
     {
         /// <inheritdoc/>
@@ -35,9 +35,6 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
 
         /// <inheritdoc/>
         public override byte SubType => 1;
-
-        /// <inheritdoc/>
-        public override ushort DataLength => 42;
 
         /// <summary>
         /// Describes the entry in a partition table, starting with entry 1. Partition number zero represents the entire device. Valid partition numbers for a MBR partition are [1, 4]. Valid partition numbers for a GPT partition are [1, NumberOfPar titionEntries].

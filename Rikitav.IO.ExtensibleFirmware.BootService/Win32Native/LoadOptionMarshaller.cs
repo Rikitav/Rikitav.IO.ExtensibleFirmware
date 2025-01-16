@@ -1,30 +1,20 @@
-// Rikitav.IO.ExtensibleFirmware
-// Copyright (C) 2024 Rikitav
-// 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program. If not, see <http://www.gnu.org/licenses/>.
-
-using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
+﻿using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
 using Rikitav.IO.ExtensibleFirmware.BootService.LoadOption;
 using Rikitav.IO.ExtensibleFirmware.BootService.UefiNative;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Rikitav.IO.ExtensibleFirmware.BootService.Win32Native
 {
-    internal class LoadOptionMarshaller
+    internal static class LoadOptionMarshaller
     {
+        private const int BytesPerChar = 2;
+
         public static EFI_LOAD_OPTION BinaryReaderToStructure(BinaryReader reader)
         {
             // Starting manual marshalling strcture to managed
@@ -48,7 +38,7 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.Win32Native
             List<EFI_DEVICE_PATH_PROTOCOL> FilePathListBuilder = new List<EFI_DEVICE_PATH_PROTOCOL>();
             while (true)
             {
-                EFI_DEVICE_PATH_PROTOCOL edpp = DeviceProtocolMarshaller.BinaryReaderToStructure(reader);
+                EFI_DEVICE_PATH_PROTOCOL edpp = DevicePathProtocolMarshaller.BinaryReaderToStructure(reader);
                 FilePathListBuilder.Add(edpp);
                 if (edpp.Type == DeviceProtocolType.End && edpp.SubType == 0xFF)
                     break;
@@ -80,13 +70,45 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.Win32Native
 
             // Writing filepath list
             foreach (EFI_DEVICE_PATH_PROTOCOL edpp in structure.FilePathList)
-                DeviceProtocolMarshaller.StructureToBinaryWriter(edpp, writer);
+                DevicePathProtocolMarshaller.StructureToBinaryWriter(edpp, writer);
 
             // Writing optional data
             writer.Write(structure.OptionalData);
 
             // Flushing
             writer.Flush();
+        }
+
+        public static void MarshalToBinaryWriter(LoadOptionBase loadOption, BinaryWriter writer)
+        {
+            // Writing attributes field
+            writer.Write((int)loadOption.Attributes);
+
+            // Writing length of filepath list
+            writer.Write((ushort)loadOption.OptionProtocols.Sum(p => DevicePathProtocolMarshaller.GetStrctureLength(p)));
+
+            // Writing option description
+            writer.Write(Encoding.Unicode.GetBytes(loadOption.Description + "\0"));
+
+            // Writing filepath list
+            foreach (DevicePathProtocolBase edpp in loadOption.OptionProtocols)
+                DevicePathProtocolMarshaller.MarshalToBinaryWriter(edpp, writer);
+
+            if (!(loadOption.OptionProtocols.Last() is DevicePathProtocolEnd))
+                DevicePathProtocolMarshaller.MarshalToBinaryWriter(new DevicePathProtocolEnd(), writer);
+
+            // Writing optional data
+            writer.Write(loadOption.GetOptionalData());
+        }
+
+        public static int GetStrcutureLength(LoadOptionBase loadOption)
+        {
+            int structLength = ((loadOption.Description.Length + 1) * BytesPerChar) + 2 + 4;
+
+            foreach (DevicePathProtocolBase devicePathProtocol in loadOption.OptionProtocols)
+                structLength += DevicePathProtocolMarshaller.GetStrctureLength(devicePathProtocol);
+
+            return structLength;
         }
     }
 }

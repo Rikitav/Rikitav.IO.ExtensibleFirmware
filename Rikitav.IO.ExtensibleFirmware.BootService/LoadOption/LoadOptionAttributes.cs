@@ -22,7 +22,7 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
     /// The attributes for this load option entry
     /// </summary>
     [Flags]
-    public enum LoadOptionAttributes
+    public enum LoadOptionAttributes : uint
     {
         /// <summary>
         /// If a load option is marked as LOAD_OPTION_ACTIVE, the boot manager will attempt to boot automatically using the device path information in the load option

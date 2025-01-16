@@ -23,16 +23,20 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
     /// </summary>
     public class RawMediaDevicePath : DevicePathProtocolBase
     {
-        /// <inheritdoc/>
-        public override DeviceProtocolType Type => _Type;
+        private readonly byte _SubType = 0;
         private readonly DeviceProtocolType _Type = 0;
 
         /// <inheritdoc/>
-        public override byte SubType => _SubType;
-        private readonly byte _SubType = 0;
+        public override DeviceProtocolType Type
+        {
+            get => _Type;
+        }
 
         /// <inheritdoc/>
-        public override ushort DataLength => (ushort)(ProtocolData.Length + 4);
+        public override byte SubType
+        {
+            get => _SubType;
+        }
 
         /// <summary>
         /// <para>GUID - An EFI GUID in standard format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.</para>
@@ -51,17 +55,21 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
         /// </summary>
         /// <param name="type"></param>
         /// <param name="subType"></param>
-        public RawMediaDevicePath(DeviceProtocolType type, byte subType) : base()
+        public RawMediaDevicePath(DeviceProtocolType type, byte subType)
+            : this(type, subType, Array.Empty<byte>()) { }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="subType"></param>
+        /// <param name="protocolData"></param>
+        public RawMediaDevicePath(DeviceProtocolType type, byte subType, byte[] protocolData) : base()
         {
-            ProtocolData = Array.Empty<byte>();
+            ProtocolData = protocolData;
             _Type = type;
             _SubType = subType;
         }
-
-        /*
-        public RawMediaDevicePath(byte[]? protocolData)
-            : base() => ProtocolData = protocolData ?? Array.Empty<byte>();
-        */
 
         /// <inheritdoc/>
         protected override void Deserialize(byte[] protocolData) => ProtocolData = protocolData;

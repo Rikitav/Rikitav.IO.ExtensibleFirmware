@@ -21,7 +21,7 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
     /// <summary>
     /// Attribute describing the wrapper class for the DevicePath protocol
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class DefineDevicePathProtocolAttribute : Attribute
     {
         /// <summary>
@@ -39,13 +39,14 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
         /// </summary>
         /// <param name="type"></param>
         /// <param name="subType"></param>
-        /// <param name="protocolWrapperType"></param>
         /// <exception cref="InvalidInheritedClassException"></exception>
-        public DefineDevicePathProtocolAttribute(DeviceProtocolType type, byte subType, Type protocolWrapperType)
+        public DefineDevicePathProtocolAttribute(DeviceProtocolType type, byte subType) //, Type protocolWrapperType)
         {
+            /*
             // Checking inherited class
             if (!typeof(DevicePathProtocolBase).IsAssignableFrom(protocolWrapperType))
                 throw new InvalidInheritedClassException(string.Format("The type {0} is not a descendant of class {1}", protocolWrapperType.Name, typeof(DevicePathProtocolBase).Name));
+            */
 
             // Assigning info
             Type = type;

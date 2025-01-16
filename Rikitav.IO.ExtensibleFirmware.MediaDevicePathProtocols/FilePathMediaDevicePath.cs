@@ -23,7 +23,7 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
     /// File Path Media Device Path
     /// https://uefi.org/specs/UEFI/2.10/10_Protocols_Device_Path_Protocol.html#file-path-media-device-path
     /// </summary>
-    [DefineDevicePathProtocol(DeviceProtocolType.Media, 4, typeof(FilePathMediaDevicePath))]
+    [DefineDevicePathProtocol(DeviceProtocolType.Media, 4)]
     public sealed class FilePathMediaDevicePath : DevicePathProtocolBase
     {
         /// <inheritdoc/>
@@ -31,9 +31,6 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
 
         /// <inheritdoc/>
         public override byte SubType => 4;
-
-        /// <inheritdoc/>
-        public override ushort DataLength => (ushort)((PathName.Length + 1) * 2 + 4);
 
         /// <summary>
         /// A NULL-terminated Path string including directory and file name.

@@ -47,7 +47,7 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.Win32Native
         public override int Read(byte[] buffer, int offset, int count)
         {
             if (_CurPos + count > _BufferLength)
-                return 0;
+                throw new ArgumentOutOfRangeException();
 
             for (int i = offset; i < count; i++)
                 buffer[i] = Marshal.ReadByte(_Buffer, (int)_CurPos++);

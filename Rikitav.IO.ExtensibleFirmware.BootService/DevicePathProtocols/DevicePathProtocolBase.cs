@@ -35,10 +35,12 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
         /// </summary>
         public abstract byte SubType { get; }
 
+        /*
         /// <summary>
         /// Length of this structure in bytes. Length is 4 + n bytes.
         /// </summary>
         public abstract ushort DataLength { get; }
+        */
 
         /// <summary>
         /// Abstract constructor
@@ -61,6 +63,7 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
             return protocolWrapper;
         }
 
+        /*
         /// <summary>
         /// Serialize protocol to structre
         /// </summary>
@@ -75,7 +78,9 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
                 Data = Serialize()
             };
         }
+        */
 
+        /*
         /// <summary>
         /// Serialize and write protocol into BinaryWriter
         /// </summary>
@@ -88,6 +93,12 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
             writer.Write(SubType);
             writer.Write(DataLength);
             writer.Write(data);
+        }
+        */
+
+        internal byte[] GetSerializingData()
+        {
+            return Serialize();
         }
 
         /// <summary>

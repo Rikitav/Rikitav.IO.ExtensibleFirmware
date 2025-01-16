@@ -29,7 +29,7 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
         /// <summary>
         /// The data coming after the main ones is additional
         /// </summary>
-        public byte[] OptionalData => _OptionalData;
+        public new byte[] OptionalData => OptionalData;
 
         /// <summary>
         /// Create new <see cref="FirmwareBootOption"/> load option instance
@@ -62,7 +62,7 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
         /// <param name="protocols"></param>
         public FirmwareBootOption(LoadOptionAttributes attributes, string description, byte[] optionalData, DevicePathProtocolBase[] protocols) : base(attributes, description)
         {
-            _OptionalData = optionalData;
+            base.OptionalData = optionalData;
             OptionProtocols = protocols;
         }
     }

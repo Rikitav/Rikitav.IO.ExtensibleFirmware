@@ -23,7 +23,7 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
     /// The CD-ROM Media Device Path is used to define a system partition that exists on a CD-ROM. The CD-ROM is assumed to contain an ISO-9660 file system and follow the CD-ROM “El Torito” format
     /// https://uefi.org/specs/UEFI/2.10/10_Protocols_Device_Path_Protocol.html#cd-rom-media-device-path
     /// </summary>
-    [DefineDevicePathProtocol(DeviceProtocolType.Media, 2, typeof(CdRomMediaDevicePath))]
+    [DefineDevicePathProtocol(DeviceProtocolType.Media, 2)]
     public sealed class CdRomMediaDevicePath : DevicePathProtocolBase
     {
         /// <inheritdoc/>
@@ -31,9 +31,6 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
 
         /// <inheritdoc/>
         public override byte SubType => 2;
-
-        /// <inheritdoc/>
-        public override ushort DataLength => 24;
 
         /// <summary>
         /// Boot Entry number from the Boot Catalog. The Initial/Default entry is defined as zero.

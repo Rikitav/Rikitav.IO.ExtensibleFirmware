@@ -23,7 +23,7 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
     /// The Media Protocol Device Path is used to denote the protocol that is being used in a device path at the location of the path specified. Many protocols are inherent to the style of device path.
     /// https://uefi.org/specs/UEFI/2.10/10_Protocols_Device_Path_Protocol.html#media-protocol-device-path
     /// </summary>
-    [DefineDevicePathProtocol(DeviceProtocolType.Media, 5, typeof(MediaProtocolMediaDevicePath))]
+    [DefineDevicePathProtocol(DeviceProtocolType.Media, 5)]
     public sealed class MediaProtocolMediaDevicePath : DevicePathProtocolBase
     {
         /// <inheritdoc/>
@@ -31,9 +31,6 @@ namespace Rikitav.IO.ExtensibleFirmware.MediaDevicePathProtocols
 
         /// <inheritdoc/>
         public override byte SubType => 5;
-
-        /// <inheritdoc/>
-        public override ushort DataLength => 20;
 
         /// <summary>
         /// The ID of the protocol

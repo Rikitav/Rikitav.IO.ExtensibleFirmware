@@ -16,11 +16,8 @@
 
 using Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols;
 using Rikitav.IO.ExtensibleFirmware.BootService.UefiNative;
+using Rikitav.IO.ExtensibleFirmware.BootService.Win32Native;
 using System;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
 {
@@ -29,8 +26,6 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
     /// </summary>
     public abstract class LoadOptionBase
     {
-        //public const VariableAttributes LoadOptionVariableAttributes = VariableAttributes.NON_VOLATILE | VariableAttributes.BOOTSERVICE_ACCESS | VariableAttributes.RUNTIME_ACCESS;
-
         /// <summary>
         /// The attributes for this load option entry
         /// </summary>
@@ -50,7 +45,7 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
         /// <summary>
         /// The remaining bytes in the load option descriptor are a binary data buffer that is passed to the loaded image. If the field is zero bytes long, a NULL pointer is passed to the loaded image. The number of bytes in OptionalData can be computed by subtracting the starting offset of OptionalData from total size in bytes of the EFI_LOAD_OPTION
         /// </summary>
-        protected byte[] _OptionalData;
+        protected byte[] OptionalData;
 
         /// <summary>
         /// Create new <see cref="LoadOptionBase"/> load option instance from attributes and description
@@ -62,7 +57,7 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
             Attributes = attributes;
             Description = description;
             OptionProtocols = Array.Empty<DevicePathProtocolBase>();
-            _OptionalData = Array.Empty<byte>();
+            OptionalData = Array.Empty<byte>();
         }
 
         /// <summary>
@@ -73,12 +68,12 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
         {
             Attributes = loadOption.Attributes;
             Description = loadOption.Description;
-            _OptionalData = loadOption.OptionalData;
+            OptionalData = loadOption.OptionalData;
 
             OptionProtocols = new DevicePathProtocolBase[loadOption.FilePathList.Length];
             for (int i = 0; i < loadOption.FilePathList.Length; i++)
             {
-                Type? protocolWrapperType = DevicePathProtocolWrapperSelector.Instance.GetRegisteredType(loadOption.FilePathList[i].Type, loadOption.FilePathList[i].SubType);
+                Type? protocolWrapperType = DevicePathProtocolWrapperSelector.GetRegisteredType(loadOption.FilePathList[i].Type, loadOption.FilePathList[i].SubType);
                 OptionProtocols[i] = protocolWrapperType == null
                     ? new RawMediaDevicePath(loadOption.FilePathList[i].Type, loadOption.FilePathList[i].SubType)
                     : DevicePathProtocolBase.CreateProtocol(protocolWrapperType, loadOption.FilePathList[i]);
@@ -101,6 +96,7 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
         }
         */
 
+        /*
         /// <summary>
         /// Returns the length of the native EFI_LOAD_OPTION structure
         /// </summary>
@@ -113,7 +109,9 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
                 + 2                                       // FilePathListLength
                 + 4;                                      // Attributes
         }
+        */
 
+        /*
         /// <summary>
         /// ¬озвращает нативное представление структуры <see cref="EFI_LOAD_OPTION"/>
         /// </summary>
@@ -130,7 +128,9 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
                 OptionalData = _OptionalData
             };
         }
+        */
 
+        /*
         /// <summary>
         /// Writes structure data as a native <see cref="EFI_LOAD_OPTION"/> structure to a <see cref="BinaryWriter"/> stream
         /// </summary>
@@ -153,6 +153,7 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
             // Writing optional data
             writer.Write(_OptionalData);
         }
+        */
 
         /*
         internal void MarshalFromBinaryReader(BinaryReader reader)
@@ -207,13 +208,18 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
         }
         */
 
+        internal byte[] GetOptionalData()
+        {
+            return OptionalData;
+        }
+
         /// <summary>
         /// Modifies optional data within a structure
         /// </summary>
         /// <param name="data"></param>
         public void OverrideOptionalData(byte[] data)
         {
-            _OptionalData = data;
+            OptionalData = data;
         }
     }
 }

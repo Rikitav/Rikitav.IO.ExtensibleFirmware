@@ -196,28 +196,30 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService
 
         internal static void WriteFirmwareLoadOption(LoadOptionBase loadOption, ushort BootOptionIndex)
         {
+            /*
             // Checking for End protocol
             if (!(loadOption.OptionProtocols.Last() is DevicePathProtocolEnd))
                 throw new InvalidLoadOptionStrcutreException("Load option does not have DevicePathProtocolEnd at the end of the OptionProtocols list. This protocol is necessary for correct recording");
+            */
 
             // Marshalling structure to unmanaged memory pointer
-            IntPtr pointer = Marshal.AllocHGlobal(loadOption.GetStructureLength());
-            using (BinaryWriter writer = new BinaryWriter(new MemoryPointerStream(pointer, loadOption.GetStructureLength(), true), Encoding.Unicode, true))
-                loadOption.MarshalToBinaryWriter(writer);
+            int structureLength = LoadOptionMarshaller.GetStrcutureLength(loadOption);
+            IntPtr pointer = Marshal.AllocHGlobal(structureLength);
+            
+            using (BinaryWriter writer = new BinaryWriter(new MemoryPointerStream(pointer, structureLength, true), Encoding.Unicode, true))
+                LoadOptionMarshaller.MarshalToBinaryWriter(loadOption, writer);
 #if DEBUG
-            int structLength = loadOption.GetStructureLength();
-            byte[] DebugData = new byte[structLength];
-            Marshal.Copy(pointer, DebugData, 0, structLength);
+            byte[] DebugData = new byte[structureLength];
+            Marshal.Copy(pointer, DebugData, 0, structureLength);
 #endif
             // Writing variable to firmware
             FirmwareUtilities.SetGlobalEnvironmentVariable(
                 BS_ValueFormatHelper.GetLoadOptionNameFromIndex(BootOptionIndex),
-                pointer,
-                loadOption.GetStructureLength());
+                pointer, structureLength);
 
             Marshal.FreeHGlobal(pointer);
         }
-
+        
         internal static EFI_LOAD_OPTION ReadFirmwareLoadOption(ushort loadOptionIndex)
         {
             // Getting variable data

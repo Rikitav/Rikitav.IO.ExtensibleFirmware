@@ -68,4 +68,24 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService
         public InvalidLoadOptionStrcutreException(string message)
             : base(message) { }
     }
+
+    /// <summary>
+    /// The wrapper class does not contain a defining attribute
+    /// </summary>
+    public class MissingDevicePathProtocolWrapperAttributeException : Exception
+    {
+        /// <inheritdoc/>
+        public MissingDevicePathProtocolWrapperAttributeException(string message)
+            : base(message) { }
+    }
+
+    /// <summary>
+    /// The wrapper class has the wrong structure
+    /// </summary>
+    public class InvalidDevicePathProtocolStructureException : Exception
+    {
+        /// <inheritdoc/>
+        public InvalidDevicePathProtocolStructureException(string message)
+            : base(message) { }
+    }
 }
