@@ -16,7 +16,6 @@
 
 using Rikitav.IO.ExtensibleFirmware.BootService.UefiNative;
 using System;
-using System.IO;
 
 namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
 {
@@ -34,13 +33,6 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
         /// Protocol Sub-Type - Varies by Type
         /// </summary>
         public abstract byte SubType { get; }
-
-        /*
-        /// <summary>
-        /// Length of this structure in bytes. Length is 4 + n bytes.
-        /// </summary>
-        public abstract ushort DataLength { get; }
-        */
 
         /// <summary>
         /// Abstract constructor
@@ -62,39 +54,6 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.DevicePathProtocols
             protocolWrapper.Deserialize(protocol.Data);
             return protocolWrapper;
         }
-
-        /*
-        /// <summary>
-        /// Serialize protocol to structre
-        /// </summary>
-        /// <returns></returns>
-        internal EFI_DEVICE_PATH_PROTOCOL ToEfiProtocol()
-        {
-            return new EFI_DEVICE_PATH_PROTOCOL()
-            {
-                Type = Type,
-                SubType = SubType,
-                Length = DataLength,
-                Data = Serialize()
-            };
-        }
-        */
-
-        /*
-        /// <summary>
-        /// Serialize and write protocol into BinaryWriter
-        /// </summary>
-        /// <param name="writer"></param>
-        internal void MarshalToBinaryWriter(BinaryWriter writer)
-        {
-            byte[] data = Serialize();
-
-            writer.Write((byte)Type);
-            writer.Write(SubType);
-            writer.Write(DataLength);
-            writer.Write(data);
-        }
-        */
 
         internal byte[] GetSerializingData()
         {

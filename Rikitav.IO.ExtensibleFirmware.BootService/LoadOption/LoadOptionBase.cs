@@ -73,141 +73,16 @@ namespace Rikitav.IO.ExtensibleFirmware.BootService.LoadOption
             OptionProtocols = new DevicePathProtocolBase[loadOption.FilePathList.Length];
             for (int i = 0; i < loadOption.FilePathList.Length; i++)
             {
+                if (loadOption.FilePathList[i].Type == DeviceProtocolType.End && loadOption.FilePathList[i].SubType == 0xFF)
+                    break; // End protocol
+
                 Type? protocolWrapperType = DevicePathProtocolWrapperSelector.GetRegisteredType(loadOption.FilePathList[i].Type, loadOption.FilePathList[i].SubType);
                 OptionProtocols[i] = protocolWrapperType == null
                     ? new RawMediaDevicePath(loadOption.FilePathList[i].Type, loadOption.FilePathList[i].SubType)
                     : DevicePathProtocolBase.CreateProtocol(protocolWrapperType, loadOption.FilePathList[i]);
             }
         }
-
-        /*
-        /// <summary>
-        /// Create new <see cref="LoadOptionBase"/> load option instance from raw structure
-        /// </summary>
-        /// <param name="binaryReader"></param>
-        protected LoadOptionBase(BinaryReader binaryReader)
-        {
-            Attributes = 0;
-            Description = string.Empty;
-            OptionProtocols = Array.Empty<DevicePathProtocolBase>();
-            _OptionalData = Array.Empty<byte>();
-
-            MarshalFromBinaryReader(binaryReader);
-        }
-        */
-
-        /*
-        /// <summary>
-        /// Returns the length of the native EFI_LOAD_OPTION structure
-        /// </summary>
-        /// <returns></returns>
-        internal int GetStructureLength()
-        {
-            return OptionProtocols.Sum(x => x.DataLength) // Protocols data
-                + ((Description.Length + 1) * 2)          // Description string
-                + _OptionalData.Length                    // Optional data
-                + 2                                       // FilePathListLength
-                + 4;                                      // Attributes
-        }
-        */
-
-        /*
-        /// <summary>
-        /// ¬озвращает нативное представление структуры <see cref="EFI_LOAD_OPTION"/>
-        /// </summary>
-        /// <returns></returns>
-        internal EFI_LOAD_OPTION ToLoadOption()
-        {
-            EFI_DEVICE_PATH_PROTOCOL[] FilePathList = OptionProtocols.Select(x => x.ToEfiProtocol()).ToArray();
-            return new EFI_LOAD_OPTION()
-            {
-                Attributes = Attributes,
-                FilePathListLength = (ushort)FilePathList.Sum(x => x.Length),
-                Description = Description,
-                FilePathList = FilePathList,
-                OptionalData = _OptionalData
-            };
-        }
-        */
-
-        /*
-        /// <summary>
-        /// Writes structure data as a native <see cref="EFI_LOAD_OPTION"/> structure to a <see cref="BinaryWriter"/> stream
-        /// </summary>
-        /// <param name="writer"></param>
-        internal void MarshalToBinaryWriter(BinaryWriter writer)
-        {
-            // Writing attributes field
-            writer.Write((int)Attributes);
-
-            // Writing length of filepath list
-            writer.Write((ushort)OptionProtocols.Sum(p => p.DataLength));
-
-            // Writing option description
-            writer.Write(Encoding.Unicode.GetBytes(Description + "\0"));
-
-            // Writing filepath list
-            foreach (DevicePathProtocolBase edpp in OptionProtocols)
-                edpp.MarshalToBinaryWriter(writer);
-
-            // Writing optional data
-            writer.Write(_OptionalData);
-        }
-        */
-
-        /*
-        internal void MarshalFromBinaryReader(BinaryReader reader)
-        {
-            // Reading Attributes field
-            Attributes = (LoadOptionAttributes)reader.ReadUInt32();
-
-            // Reading length of filepath list
-            ushort FilePathListLength = reader.ReadUInt16();
-
-            // Reading Description (Load option name)
-            StringBuilder builder = new StringBuilder();
-            for (ushort chr = reader.ReadUInt16(); chr != 0; chr = reader.ReadUInt16())
-                builder.Append((char)chr);
-
-            // Reading Description (Load option name)
-            Description = builder.ToString();
-
-            // Reading Device path list
-            List<EFI_DEVICE_PATH_PROTOCOL> FilePathListBuilder = new List<EFI_DEVICE_PATH_PROTOCOL>();
-            while (true)
-            {
-                EFI_DEVICE_PATH_PROTOCOL edpp = DeviceProtocolMarshaller.BinaryReaderToStructure(reader);
-                FilePathListBuilder.Add(edpp);
-                if (edpp.Type == DeviceProtocolType.End && edpp.SubType == 0xFF)
-                    break;
-            }
-
-            // Reading Device path list
-            LoadOption.FilePathList = FilePathListBuilder.ToArray();
-
-            // Manually seek to optional data position because EFI_DEVICE_PATH_PROTOCOL sequence not always property aligned
-            int SeekLength = sizeof(uint) + sizeof(ushort) + (LoadOption.Description.Length + 1) * sizeof(ushort) + LoadOption.FilePathListLength;
-            reader.BaseStream.Seek(SeekLength, SeekOrigin.Begin);
-
-            // Reading OptionalData field
-            LoadOption.OptionalData = reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
-        }
-        */
-
-        /*
-        public object CopyTo(LoadOptionBase optionCopy)
-        {
-            optionCopy.Attributes = Attributes;
-            optionCopy.Description = Description;
-            
-            optionCopy.OptionProtocols = new DevicePathProtocolBase[OptionProtocols.Length];
-            OptionProtocols.CopyTo(optionCopy.OptionProtocols, 0);
-
-            optionCopy._OptionalData = _OptionalData;
-            return optionCopy;
-        }
-        */
-
+        
         internal byte[] GetOptionalData()
         {
             return OptionalData;
